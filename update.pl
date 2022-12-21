@@ -1,8 +1,8 @@
 #!/usr/bin/perl
 use strict;
 use warnings;
-use DBI;
 use CGI;
+use DBI;
 
 my $user = 'alumno';
 my $password = 'pweb1';
@@ -11,21 +11,12 @@ my $dbh = DBI-> connect($dsn,$user,$password) or die ("No se pudo conectar!");
 
 my $q = CGI->new;
 print $q->header('text/xml;charset=UTF-8');
-
-my $owner = $q->param("userName");
+my $owner = $q->param("owner");
 my $title = $q->param("title");
-my $sth = $dbh->prepare("SELECT text FROM Articles WHERE (owner=?, title=?)");
+my $text = $q->param("text");
+my $sth = $dbh->prepare("SELECT text FROM Articles WHERE (owner=?,title=?)");
 $sth->execute($owner,$title);
+my $texto = <STDIN>;
+my $sth2 = $dbh->prepare("UPDATE Articles SET text=?");
+$sth2->execute($texto);
 
-while(my @row = $sth->fetchrow_array ){
-print "<?xml versio '1.0' encoding='UTF-8'?>";
-print <<XML;
-<article>
-  <owner>$owner</owner>
-  <title>$title</tile>
-  <text> @row </text>
-XML
-}
-print "</article>";
-$sth->finish;
-$dbh->disconnect;

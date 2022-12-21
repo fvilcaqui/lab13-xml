@@ -15,16 +15,14 @@ print $q->header('text/xml;charset=UTF-8');
 my $owner = $q->param("userName");
 my $title = $q->param("title");
 my $sth = $dbh->prepare("DELETE FROM Articles WHERE (owner,title) VALUES(?,?)");
-
 $sth->execute($owner,$title);
 
 print "<?xml versio '1.0' encoding='UTF-8'?>";
-
 print <<XML;
-<article>
-  <owner>$owner</owner>
-  <title>$title</tile>
-</article>
+  <article>
+    <owner>$owner</owner>
+    <title>$title</tile>
+  </article>
 XML
 
 $sth->finish;

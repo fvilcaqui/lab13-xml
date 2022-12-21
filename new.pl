@@ -19,7 +19,7 @@ my $sth = $dbh->prepare("INSERT INTO Articles(title,owner,text) VALUES(?,?,?)");
 
 $sth->execute($title,$owner,$text);
 
-print "<?xml version='1.0' encoding='UTF-8'?>"
+print "<?xml version='1.0' encoding='UTF-8'?>";
 print <<XML;
 <article>
   <title>$title</title>

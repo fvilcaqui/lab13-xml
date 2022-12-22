@@ -11,20 +11,19 @@ my $dbh = DBI-> connect($dsn,$user,$password) or die ("No se pudo conectar!");
 
 my $q = CGI->new;
 print $q->header('text/xml;charset=UTF-8');
-my $owner = $q->param("userName");
+my $owner = $q->param("owner");
 my $title = $q->param("title");
 my $sth = $dbh->prepare("SELECT text FROM Articles WHERE owner=?");
 $sth->execute($owner);
 
+my $filas = " ";
 while(my @row = $sth->fetchrow_array){
   my @nuevo = split("\n",$row[0]);
-  my $filas = " ";
   foreach my $i (@nuevo){
         $filas .= markdown($i);
  } 
-print renderPagina($filas);
 }
-
+renderPagina($filas);
 sub markdown{
  my $line = $_[0];
  if($line =~ /^#([^#].*)/){
